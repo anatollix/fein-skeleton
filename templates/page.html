@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% load applicationcontent_tags %}
+{% load feincms_tags %}
+{% load feincms_page_tags %}
+{% load tagging_tags %}
+{% load blog_tags %}
+
+{% block title %}
+  {{ feincms_page.page_title }}
+{% endblock %}
+
+{% block extra-head %}
+<meta name="description" content="{{ feincms_page.meta_description }}" />
+<meta name="keywords" content="{{ feincms_page.meta_keywords }}" />
+{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="large-12 columns">
+      <h2>{% block page_title %}{{ feincms_page.content_title }}{% endblock %}</h2>
+    </div>
+</div>
+
+<div class="row">
+  {% block page_content %}
+  <div class="large-8 columns">
+    {% feincms_frontend_editing feincms_page request %}
+    {% feincms_render_region feincms_page "main" request %}
+  </div>
+  {% endblock %}
+
+
+  {% block sidebar %}
+  <div class="large-4 columns">
+    {% feincms_render_region feincms_page "sidebar" request %}
+  </div>
+  {% endblock %}
+</div>
+{% endblock %}

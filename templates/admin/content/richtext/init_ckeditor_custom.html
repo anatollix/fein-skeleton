@@ -1,0 +1,10 @@
+{% extends "admin/content/richtext/init_ckeditor.html" %}
+
+{% block config %}
+{{ block.super }}
+$(function() {
+    $('#id_excerpt').each(function() {
+      CKEDITOR.replace(this.id, config);
+    });
+});
+{% endblock %}

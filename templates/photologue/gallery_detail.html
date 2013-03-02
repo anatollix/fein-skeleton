@@ -1,0 +1,10 @@
+<div class="gallery" id="gallery_{{ object.id }}">
+  {% for photo in object.public %}
+  <img src="{{ photo.get_display_url }}" alt="{{ photo.title }}" title="{{ photo.title }}"{% if photo.caption %} data-caption="#photo_caption_{{ photo.id }}"{% endif %} />
+  {% endfor %}
+</div>
+{% for photo in object.public %}
+{% if photo.caption %}
+<span class="orbit-caption" id="photo_caption_{{ photo.id }}">{{ photo.caption }}</span>
+{% endif %}
+{% endfor %}

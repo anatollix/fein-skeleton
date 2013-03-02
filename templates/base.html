@@ -1,0 +1,124 @@
+{% load feincms_page_tags %}
+{% load mptt_tags %}
+{% load blog_tags %}
+{% load project_tags %}
+{% load compress %}
+<!DOCTYPE html>
+<!--[if IE 8]>                  <html class="no-js lt-ie9" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>{% block title %}{% endblock %}</title>
+
+    <!-- CSS -->
+    {% compress css %}
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/normalize.css" />
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/app.css" />
+    {{ feincms_page.content.media.css }}
+    {% endcompress %}
+
+    <!-- Favicons -->
+    <link rel="shortcut icon" href="{{ STATIC_URL }}img/favicon.ico">
+    <link rel="apple-touch-icon-precomposed" href="{{ STATIC_URL }}img/apple-touch-icon.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="{{ STATIC_URL }}img/apple-touch-icon-72x72.png" />
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="{{ STATIC_URL }}img/apple-touch-icon-114x114.png" />
+
+    {% compress js %}
+    <script src="{{ STATIC_URL }}js/vendor/custom.modernizr.js"></script>
+    {% endcompress %}
+
+    {% block extra-head %}
+    {% endblock %}
+
+</head>
+<body>
+    <div class="row">
+        <div class="large-12 columns">
+            <h2>FeinCMS Skeleton</h2>
+            {% block navigation %}
+            <div class="contain-to-grid">
+              <nav class="top-bar">
+                  <section class="top-bar-section">
+                  <!-- navigation -->
+                  {% comment %}
+                  We are starting from level=2,
+                  because our pages are inherited from the homepage,
+                  this way we can have default sidebar or other blocks.
+                  Also if we have multiple languages, our navigation will become
+                  more logical
+
+                    Homepage - /en/
+                      Page1 - /en/page1/
+                  {% endcomment %}
+                  {% feincms_nav feincms_page level=2 depth=5 as sublevel %}
+                    {% if not sublevel and not feincms_page.parent %}
+                    <ul class="left">
+                      <li class="active"><a href="{{ feincms_page.get_absolute_url }}">{{ feincms_page.title }}</a></li>
+                    </ul>
+                    {% endif %}
+                    {% for p,structure in sublevel|tree_info %}
+                    {% if structure.new_level %}
+                      <ul class="{% if p.level > 1 %}dropdown {% endif %}left">
+                      {% comment %}Show homepage along the other pages in the nav{% endcomment %}
+                      {% if not p.parent.parent %}
+                      <li{% if feincms_page == p.parent %} class="active"{% endif %}><a href="{{ p.parent.get_absolute_url }}">{{ p.parent.title }}</a></li>
+                      {% endif %}
+                      {% else %}</li>{% endif %}
+                      <li class="divider"></li>
+                      <li class="{% if feincms_page == p or p|is_parent_of:feincms_page %}active {% endif %}level_{{ p.level }}{% if p.children.active %} has-dropdown{% endif %}">
+                      <a href="{{ p.get_absolute_url }}">{{ p.title }}</a>
+                      {% for level in structure.closed_levels %}</li></ul>{% endfor %}
+                    {% endfor %}
+                    <!-- navigation ends here -->
+                  </section>
+              </nav>
+            </div>
+            {% endblock navigation %}
+        </div>
+    </div>
+
+
+  {% block content %}
+  {% endblock %}
+
+  <script>
+  document.write('<script src=' +
+    ('__proto__' in {} ? '{{ STATIC_URL }}js/vendor/zepto' : '{{ STATIC_URL }}js/vendor/jquery') +
+  '.js><\/script>')
+  </script>
+
+  {% compress js %}
+  <script src="{{ STATIC_URL }}js/foundation/foundation.js"></script>
+  <script src="{{ STATIC_URL }}js/foundation/foundation.alerts.js"></script>
+  <script src="{{ STATIC_URL }}js/foundation/foundation.clearing.js"></script>
+  <script src="{{ STATIC_URL }}js/foundation/foundation.cookie.js"></script>
+  <script src="{{ STATIC_URL }}js/foundation/foundation.dropdown.js"></script>
+  <script src="{{ STATIC_URL }}js/foundation/foundation.forms.js"></script>
+  <script src="{{ STATIC_URL }}js/foundation/foundation.joyride.js"></script>
+  <script src="{{ STATIC_URL }}js/foundation/foundation.magellan.js"></script>
+  <script src="{{ STATIC_URL }}js/foundation/foundation.orbit.js"></script>
+  <script src="{{ STATIC_URL }}js/foundation/foundation.placeholder.js"></script>
+  <script src="{{ STATIC_URL }}js/foundation/foundation.reveal.js"></script>
+  <script src="{{ STATIC_URL }}js/foundation/foundation.section.js"></script>
+  <script src="{{ STATIC_URL }}js/foundation/foundation.tooltips.js"></script>
+  <script src="{{ STATIC_URL }}js/foundation/foundation.topbar.js"></script>
+  {% endcompress %}
+  {{ feincms_page.content.media.js }}
+
+  <script type="text/javascript">
+    $(function() {
+        $('.gallery').orbit({
+          'captions': true
+        });
+    });
+  </script>
+
+  {% block extra-js %}
+  {% endblock %}
+
+  <script>
+    $(document).foundation();
+  </script>
+</body>
+</html>
