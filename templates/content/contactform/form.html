@@ -1,0 +1,10 @@
+{% load uni_form_tags %}
+<div class="contactform">
+<form method="post" action="." class="uniForm">
+    {% csrf_token %}
+    {{ form|as_uni_form }}
+    <div class="form_block">
+      <button type="submit">Submit</button>
+    </div>
+</form>
+</div>

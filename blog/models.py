@@ -5,7 +5,6 @@ from django.db import models
 from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext_lazy as _
 
-from feincms.admin import item_editor
 from feincms.models import Base
 from feincms.content.richtext.models import RichTextContent
 from feincms.content.video.models import VideoContent
@@ -128,10 +127,6 @@ class Post(Base):
     def __unicode__(self):
         return self.title
 
-    @classmethod
-    def register_extension(cls, register_fn):
-        register_fn(cls, PostAdmin)
-
     @property
     def publication_date(self):
         return self.published_on
@@ -142,26 +137,12 @@ class Post(Base):
                       'day': "%02d" %self.published_on.day,
                       'slug': self.slug}
         from feincms.content.application.models import app_reverse
-        return app_reverse('blog_post', 'blog.urls', kwargs=entry_dict)
+        url = app_reverse('blog_post', 'blog.urls', kwargs=entry_dict)
+        if settings.USE_I18N:
+            # terrible hack to undo what locale url does
+            return '/' + url.split('/', 2)[2]
+        return url
 
-
-class PostAdmin(item_editor.ItemEditor):
-    date_hierarchy = 'published_on'
-    list_display = ['title', 'status', 'last_changed', 'published_on', 'user', 'is_featured', 'tags']
-    list_filter = ['status', 'published_on', 'is_featured']
-    list_editable = ['is_featured', 'user', 'tags']
-    search_fields = ['title', 'slug']
-    prepopulated_fields = {
-        'slug': ('title',),
-        }
-
-    show_on_top = ['title', 'status', 'category', 'tags', 'user']
-    raw_id_fields = []
-
-    def save_model(self, request, obj, form, change):
-        if not obj.pk:
-            obj.user = request.user
-        obj.save()
 
 if settings.USE_I18N:
     Post.register_extensions(

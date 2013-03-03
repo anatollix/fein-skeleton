@@ -1,0 +1,49 @@
+{% extends feincms_page.template.path|default:"blog/base.html" %}
+
+{% load applicationcontent_tags %}
+{% load disqus_tags %}
+{% load feincms_tags %}
+{% load tagging_tags %}
+
+{% block page_title %}{{ post.title|safe }}{% endblock %}
+{% block page_subtitle %}<h3><a href="{{ post.category.get_absolute_url }}">{{ post.category.name }}</a></h3>{% endblock %}
+
+{% block extra-head %}
+<meta name="description" content="{{ post.meta_description|default:feincms_page.meta_description }}" />
+<meta name="keywords" content="{{ post.meta_keywords|default:feincms_page.meta_keywords }}" />
+{{ post.content.media.css }}
+{% endblock %}
+
+{% block extra-js %}
+{{ post.content.media.js }}
+{% endblock %}
+
+{% block page_content %}
+<div class="large-8 columns">
+    <div class="title-post">
+      <h4>{{ post.title }}</h4>
+          {% if DEBUG %}
+          {% disqus_dev %}
+          {% endif %}
+          <a href="#disqus_thread" title="Comments" class="comment">
+          {% disqus_num_replies %}
+          </a>
+    </div>
+    <div class="blog-meta">
+        <span class="author left">Posted by : <a href="{% app_reverse "blog_author_list" "blog.urls" post.user.username %}">{{ post.user.username }}</a></span>	
+        {% if post.tags %}
+        {% tags_for_object post as tags %}
+        <span class="meta-tag right">Tag : {% for tag in tags %}<a href="{% app_reverse "blog_tag_list" "blog.urls" %}?tag={{ tag.name }}" rel="tag">{{ tag.name }}</a>{% if not forloop.last %}, {% endif %}{% endfor %}</span>
+        {% endif %}
+    </div>							
+    <div class="date-post">
+        <div class="date">{{ post.published_on|date:"d" }}</div>
+        <div class="month">{{ post.published_on|date:"b"|upper }}</div>
+    </div>
+    {% feincms_render_region post "main" request %}
+    <div class="disqus_comments">
+    {% disqus_show_comments %}
+    </div>
+</div>
+
+{% endblock %}

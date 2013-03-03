@@ -1,0 +1,22 @@
+{% load project_tags %}
+<div class="sidebar-widget">
+    <h5>Categories</h5>	
+    <div class="clear"></div>
+    <div class="row">
+        <div class="column grid_2">	
+            <ul class="link-list sidebar-list">
+            {% for category in categories|partition_horizontal:"2"|first %}
+            <li><a href="{{ category.get_absolute_url }}">{{ category.name }} &#40; {{ category.post_count }} &#41;</a></li>
+            {% endfor %}
+            </ul>							
+        </div>
+
+        <div class="column grid_2">	
+            <ul class="link-list sidebar-list">
+            {% for category in categories|partition_horizontal:"2"|last %}
+            <li><a href="{{ category.get_absolute_url }}">{{ category.name }} &#40; {{ category.post_count }} &#41;</a></li>
+            {% endfor %}
+            </ul>							
+        </div>							
+    </div>	
+</div>	

@@ -1,0 +1,20 @@
+{% load blog_tags %}
+{% load feincms_thumbnail %}
+<div class="sidebar-widget">
+<h5>Recent posts</h5>
+{% posts as posts %}
+<ul class="link-list recent-list">
+{% for post in posts|slice:":6" %}
+<li>
+{% post_image post as post_image %}
+{% if post_image %}
+<a href="{{ post.get_absolute_url }}"><img src="{{ post_image.image|cropscale:"68x53" }}" class="tframe3 left" alt="{{ post.title }}" /></a>
+{% endif %}
+<h6><a href="{{ post.get_absolute_url }}">{{ post.title }}</a></h6>
+{% post_excerpt post as excerpt %}
+{{ excerpt|safe }}
+<a href="{{ post.get_absolute_url }}" class="textlink">Learn more</a>
+</li>
+{% endfor %}
+</ul>
+</div>

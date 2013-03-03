@@ -6,9 +6,7 @@
 {% load tagging_tags %}
 {% load blog_tags %}
 
-{% block title %}
-  {{ feincms_page.page_title }}
-{% endblock %}
+{% block title %}{{ feincms_page.page_title }}{% endblock %}
 
 {% block extra-head %}
 <meta name="description" content="{{ feincms_page.meta_description }}" />
@@ -16,25 +14,26 @@
 {% endblock %}
 
 {% block content %}
-<div class="row">
-    <div class="large-12 columns">
-      <h2>{% block page_title %}{{ feincms_page.content_title }}{% endblock %}</h2>
+
+  <div class="row">
+      <div class="large-12 columns">
+        <h2>{% block page_title %}{{ feincms_page.content_title }}{% endblock %}</h2>
+        {% block page_subtitle %}{% endblock %}
+      </div>
+  </div>
+
+  <div class="row">
+    {% block page_content %}
+    <div class="large-8 columns">
+      {% feincms_frontend_editing feincms_page request %}
+      {% feincms_render_region feincms_page "main" request %}
     </div>
-</div>
+    {% endblock %}
 
-<div class="row">
-  {% block page_content %}
-  <div class="large-8 columns">
-    {% feincms_frontend_editing feincms_page request %}
-    {% feincms_render_region feincms_page "main" request %}
+    {% block sidebar %}
+    <div class="large-4 columns">
+      {% feincms_render_region feincms_page "sidebar" request %}
+    </div>
+    {% endblock %}
   </div>
-  {% endblock %}
-
-
-  {% block sidebar %}
-  <div class="large-4 columns">
-    {% feincms_render_region feincms_page "sidebar" request %}
-  </div>
-  {% endblock %}
-</div>
 {% endblock %}

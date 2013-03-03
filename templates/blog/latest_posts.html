@@ -1,0 +1,7 @@
+<ul>
+  {% for post in posts %}
+  <li><a href="{{ post.get_absolute_url }}">{{ post.title }}</a></li>
+  {% endfor %}
+  <li class="last gentesque tooltip" title="View all articles sorted by date"><a href="/blog/">More</a></li>
+
+</ul>

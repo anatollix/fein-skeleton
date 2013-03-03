@@ -1,0 +1,61 @@
+{% extends feincms_page.template.path|default:"blog/base.html" %}
+
+{% block title %}
+  {% if title %}{{ title|default:"Blog" }}{% endif %}
+{% endblock %}
+
+{% load applicationcontent_tags %}
+{% load blog_tags %}
+{% load feincms_tags %}
+{% load disqus_tags %}
+{% load feincms_thumbnail %}
+{% load tagging_tags %}
+
+{% block page_title %}<a href="{{ feincms_page.get_absolute_url }}">{{ feincms_page.content_title }}</a>{% endblock %}
+
+{% block page_subtitle %}
+  {% if tag %}<h3>Blog posts tagged with "{{ tag.name }}"</h3>{% endif %}
+  {% if category %}<h3>Blog posts in category "{{ category.name }}"</h3>{% endif %}
+  {% if author %}<h3>Blog posts by "{{ author.first_name }} {{ author.last_name }}"</h3>{% endif %}
+{% endblock %}
+
+{% block page_content %}
+  {% load pagination_tags %}
+  {% autopaginate posts 10 %}
+  <div class="large-8 columns">
+  {% for post in posts %}
+      <div class="title-post">
+        <h4><a href="{{ post.get_absolute_url }}">{{ post.title }}</a></h5>
+        {% if DEBUG %}
+        {% disqus_dev %}
+        {% endif %}
+        <a href="{{ post.get_absolute_url }}#disqus_thread" title="{{ post.title }}" class="comment">
+          {% disqus_num_replies %}
+        </a>
+      </div>
+      {% post_image post as post_image %}
+      {% if post_image %}
+        <a href="{{ post.get_absolute_url }}">
+          <img src="{{ post_image.image|thumbnail:"608x999999" }}" class="max-image botspacer10" alt="{{ post.title }}" title="{{ post.title }}" />
+        </a>
+      {% endif %}
+      <div class="blog-meta">
+        <span class="author left">Posted by : <a href="{% app_reverse "blog_author_list" "blog.urls" post.user.username %}">{{ post.user.username }}</a></span>	
+          {% if post.tags %}
+          {% tags_for_object post as tags %}
+          <span class="meta-tag right">Tag : {% for tag in tags %}<a href="{% app_reverse "blog_tag_list" "blog.urls" %}?tag={{ tag.name }}" rel="tag">{{ tag.name }}</a>{% if not forloop.last %}, {% endif %}{% endfor %}</span>
+          {% endif %}
+      </div>							
+      <div class="date-post">
+          <div class="date">{{ post.published_on|date:"d" }}</div>
+          <div class="month">{{ post.published_on|date:"b"|upper }}</div>
+      </div>
+      {% post_excerpt post as excerpt %}
+      {{ excerpt|safe }}
+      <a href="{{ post.get_absolute_url }}" class="smallbtn2"><span>Read more</span></a>
+  {% empty %}
+  <p>No entries found</p>
+  {% endfor %}
+  {% paginate %}
+  </div>
+{% endblock %}
