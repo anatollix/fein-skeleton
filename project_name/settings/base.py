@@ -1,7 +1,4 @@
 import os
-from localeurl.models import patch_reverse
-patch_reverse()
-
 
 PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir, os.pardir))
 
@@ -13,6 +10,9 @@ USE_I18N = True
 USE_L10N = USE_I18N
 
 if USE_I18N:
+    from localeurl.models import patch_reverse
+    patch_reverse()
+
     LOCALE_PATHS = [
         os.path.join(PROJECT_ROOT, 'locale'),
     ]
