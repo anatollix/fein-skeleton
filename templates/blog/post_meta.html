@@ -1,0 +1,10 @@
+{% load applicationcontent_tags %}
+{% load tagging_tags %}
+<p class="blog-meta">
+  <span class="author">Posted by <a href="{% app_reverse "blog_author_list" "blog.urls" post.user.username %}">{{ post.user.username }}</a></span>	
+    {% if post.tags %}
+    {% tags_for_object post as tags %}
+    <span class="meta-tag">Tagged {% for tag in tags %}<a href="{% app_reverse "blog_tag_list" "blog.urls" %}?tag={{ tag.name }}" rel="tag">{{ tag.name }}</a>{% if not forloop.last %}, {% endif %}{% endfor %}</span>
+    {% endif %}
+  <span class="date-post">on {{ post.published_on|date }}</span>
+</p>							

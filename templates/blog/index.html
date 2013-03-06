@@ -39,17 +39,7 @@
           <img src="{{ post_image.image|thumbnail:"608x999999" }}" class="max-image botspacer10" alt="{{ post.title }}" title="{{ post.title }}" />
         </a>
       {% endif %}
-      <div class="blog-meta">
-        <span class="author left">Posted by : <a href="{% app_reverse "blog_author_list" "blog.urls" post.user.username %}">{{ post.user.username }}</a></span>	
-          {% if post.tags %}
-          {% tags_for_object post as tags %}
-          <span class="meta-tag right">Tag : {% for tag in tags %}<a href="{% app_reverse "blog_tag_list" "blog.urls" %}?tag={{ tag.name }}" rel="tag">{{ tag.name }}</a>{% if not forloop.last %}, {% endif %}{% endfor %}</span>
-          {% endif %}
-      </div>							
-      <div class="date-post">
-          <div class="date">{{ post.published_on|date:"d" }}</div>
-          <div class="month">{{ post.published_on|date:"b"|upper }}</div>
-      </div>
+      {% include "blog/post_meta.html" %}
       {% post_excerpt post as excerpt %}
       {{ excerpt|safe }}
       <a href="{{ post.get_absolute_url }}" class="smallbtn2"><span>Read more</span></a>
