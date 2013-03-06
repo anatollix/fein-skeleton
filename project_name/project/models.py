@@ -44,6 +44,15 @@ Page.register_templates({
         ),
     })
 
+Page.register_templates({
+    'title': _('Blog template'),
+    'path': 'blog/base.html',
+    'regions': (
+        ('main', _('Main content area')),
+        ('sidebar', _('Sidebar'), 'inherited'),
+        ),
+    })
+
 PageRichTextContent = Page.create_content_type(RichTextContent, cleanse=False)
 
 Page.create_content_type(TemplateContent)

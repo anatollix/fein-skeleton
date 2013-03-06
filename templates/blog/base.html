@@ -1,0 +1,21 @@
+{% extends "page.html" %}
+
+{% load feincms_tags %}
+{% load feincms_page_tags %}
+
+{% block content %}
+  <div class="row">
+    {% block page_content %}
+    <div class="large-8 columns">
+      {% feincms_frontend_editing feincms_page request %}
+      {% feincms_render_region feincms_page "main" request %}
+    </div>
+    {% endblock %}
+
+    {% block sidebar %}
+    <div class="large-4 columns">
+      {% feincms_render_region feincms_page "sidebar" request %}
+    </div>
+    {% endblock %}
+  </div>
+{% endblock %}
