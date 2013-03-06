@@ -2,8 +2,8 @@
 # It is recommended to pin down your software versions
 # once you created a project.
 
-Django
-FeinCMS
+Django==1.5
+FeinCMS==1.7.1
 django-mptt
 django-tagging
 sorl-thumbnail
