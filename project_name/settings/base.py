@@ -28,6 +28,34 @@ INTERNAL_IPS = ['127.0.0.1']
 TIME_ZONE = "America/Los_Angeles"
 LANGUAGE_CODE = "en"
 
+INSTALLED_APPS = [
+    "feincms",
+    "feincms.module.page",
+    'feincms.module.medialibrary',
+    "{{ project_name }}.project",
+    "blog",
+
+    "disqus",
+    "pagination",
+    "photologue",
+    "tagging",
+    "mptt",
+    "django_extensions",
+    "south",
+    "debug_toolbar",
+    "sorl.thumbnail",
+    "gunicorn",
+    "compressor",
+
+    "django.contrib.admin",
+    "django.contrib.sessions",
+    "django.contrib.staticfiles",
+    "django.contrib.messages",
+    "django.contrib.auth",
+    "django.contrib.contenttypes",
+    "django.contrib.sites",
+]
+
 # These are for user-uploaded content.
 MEDIA_ROOT = os.path.join(PROJECT_ROOT, "site_media", "media")
 MEDIA_URL = "/site_media/media/"
@@ -107,6 +135,8 @@ LOGGING = {
     },
 }
 
+DEBUG_TOOLBAR_PATCH_SETTINGS = False
+
 BLOG_TITLE = '{{ project_name }}'
 BLOG_DESCRIPTION = ''
 
@@ -120,33 +150,6 @@ FEINCMS_FRONTEND_EDITING = True
 
 DISQUS_API_KEY = ''
 DISQUS_WEBSITE_SHORTNAME = '{{ project_name }}'
-
-INSTALLED_APPS = [
-    "django.contrib.sessions",
-    "django.contrib.staticfiles",
-    "django.contrib.messages",
-    "django.contrib.auth",
-    "django.contrib.contenttypes",
-    "django.contrib.sites",
-
-    "feincms",
-    "feincms.module.page",
-    "django.contrib.admin",
-    "{{ project_name }}.project",
-    "blog",
-
-    "disqus",
-    "pagination",
-    "photologue",
-    "tagging",
-    "mptt",
-    "django_extensions",
-    "south",
-    "debug_toolbar",
-    "sorl.thumbnail",
-    "gunicorn",
-    "compressor",
-]
 
 if USE_I18N:
     INSTALLED_APPS.append("localeurl")

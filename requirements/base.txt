@@ -1,21 +1,16 @@
-# For initial install we want latest versions of everything.
-# It is recommended to pin down your software versions
-# once you created a project.
-
-Django==1.5
-FeinCMS==1.7.1
-django-mptt
+Django==1.6.4
+FeinCMS==1.9.3
 django-tagging
 sorl-thumbnail
-django-photologue
+django-photologue==2.7
 django-pagination
 django-disqus
 
-PIL
-gunicorn
 South
-django-debug-toolbar
-django-extensions
 BeautifulSoup
 django-localeurl
 django-compressor
+django-debug-toolbar
+django-extensions
+psycopg2
+gunicorn

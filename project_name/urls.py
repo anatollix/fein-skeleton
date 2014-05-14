@@ -1,3 +1,4 @@
+import debug_toolbar
 from django.conf import settings
 from django.conf.urls import patterns, include, url
 
@@ -17,9 +18,10 @@ sitemaps = {
 }
 
 urlpatterns = patterns("",
+    url(r'^__debug__/', debug_toolbar.urls),
     url(r'^404/$', handler404),
     url(r'^feed/$', PostFeed()),
-    url(r'^sitemap\.xml$', 'django.contrib.sitemaps.views.sitemap', {'sitemaps': sitemaps}), 
+    url(r'^sitemap\.xml$', 'django.contrib.sitemaps.views.sitemap', {'sitemaps': sitemaps}),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^photologue/', include('photologue_extra.urls')),
     url(r'', include('fein_extra.urls')),

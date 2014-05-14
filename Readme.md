@@ -1,6 +1,6 @@
 # fein-skeleton
 
-Project template for Django 1.5 and FeinCMS
+Project template for Django 1.6 and FeinCMS
 
 ## Install
 
